@@ -99,9 +99,52 @@ function liveCells(x, y) {
   return sum;
 }
 
-render(data);
+// UI Functions
+
+let isClear = true
+let isPaused = true
+
+
+function newBoard() {
+  isClear = false
+  pause()
+  data = createArray(true)
+  nextGeneration()
+  render(data)
+}
+
+function clean() {
+  isClear = true
+  pause()
+  render(createArray())
+}
+
+function play() {
+  if (isClear) {
+    alert("Create New Board")
+  } else {
+    isPaused = false
+  }
+}
+
+function pause() {
+  isPaused = true
+}
+
+function step() {
+  pause()
+  if (!isClear) {
+    setTimeout(() => {
+      nextGeneration()
+      render(data)
+    }, 200)
+  }
+}
 
 setInterval(() => {
-  nextGeneration();
-  render(data);
-}, 50);
+  if (!isPaused) {
+    nextGeneration()
+    render(data)
+  }
+}, 200)
+

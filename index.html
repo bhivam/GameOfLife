@@ -12,20 +12,41 @@
         min-width: 100vw;
         align-items: center;
         justify-content: center;
+        flex-direction: column;
       }
 
       canvas {
         image-rendering: pixelated;
-        border: 1px solid black;
+        /* border: 1px solid black; */
         height: min(80vw, 80vh);
         width: min(80vw, 80vh);
+      }
+
+      #control-container {
+        display: flex;
+        margin-top: 1vh;
+        flex-direction: row;
+        width: min(80vw, 80vh);
+        flex-wrap: wrap;
+
+      }
+
+      button {
+        flex: 1;
       }
     </style>
   </head>
 
   <body>
     <canvas height="500" width="500"></canvas>
+    <div id="control-container">
+      <button onClick="newBoard()">New Board</button>
+      <button onClick="clean()">Clear</button>
+      <button onClick="play()">Play</button>
+      <button onClick="pause()">Pause</button>
+      <button onClick="step()">Step</button>
 
+    </div>
     <script src="src/index.js"></script>
   </body>
 </html>
