@@ -12,7 +12,9 @@ function render(data) {
   ctx.fillRect(0, 0, height, width);
 
   const drawPixel = (x, y) => {
-    ctx.fillStyle = "#000000";
+    let color = data[y][x].map((num) => num.toString(16))
+    color = "#" + color.join("").toUpperCase()
+    ctx.fillStyle = color;
     ctx.beginPath();
     ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
     ctx.stroke();
@@ -20,11 +22,20 @@ function render(data) {
 
   for (let y = 0; y < dataSize; y++) {
     for (let x = 0; x < dataSize; x++) {
-      if (data[y][x]) {
-        drawPixel(y, x);
-      }
+      drawPixel(y, x);
     }
   }
+}
+
+function arrayEquals(a, b) {
+  return Array.isArray(a) &&
+      Array.isArray(b) &&
+      a.length === b.length &&
+      a.every((val, index) => val === b[index]);
+}
+
+function randColor () {
+  return Array(6).fill(0).map(() => { return Math.floor(Math.random() * 16) }) 
 }
 
 let SIZE = 100;
@@ -37,9 +48,12 @@ function createArray(randomize = false) {
         .fill(0)
         .map(() => {
           if (randomize) {
-            return Math.round(Math.random());
+            if (1 === Math.round(Math.random()))
+              return randColor();
+            else 
+              return [15, 15, 15, 15, 15, 15]
           } else {
-            return 0;
+            return [15, 15, 15, 15, 15, 15];
           }
         });
     });
@@ -49,28 +63,64 @@ let data = createArray(true);
 
 function nextGeneration() {
   let newData = createArray();
+  console.log(newData)
 
   for (let y = 0; y < SIZE; y++) {
     for (let x = 0; x < SIZE; x++) {
       let sum = liveCells(x, y);
-      let isLive = data[y][x] === 1;
+      let isLive = !arrayEquals(data[y][x], [15, 15, 15, 15, 15, 15]);
       if (isLive) {
         if (sum < 2 || sum > 3) {
-          newData[y][x] = 0;
+          newData[y][x] = [15, 15, 15, 15, 15, 15]
         } else {
-          newData[y][x] = 1;
+          newData[y][x] = data[y][x];
         }
       } else {
         if (sum === 3) {
-          newData[y][x] = 1;
+          newData[y][x] = avgColor(x, y);
         } else {
-          newData[y][x] = 0;
+          newData[y][x] = [15, 15, 15, 15, 15, 15]
         }
       }
     }
   }
 
   data = newData;
+}
+
+function avgColor(x, y) {
+  let neighborLocations = [
+    [x, y + 1],
+    [x + 1, y + 1],
+    [x + 1, y],
+    [x + 1, y - 1],
+    [x, y - 1],
+    [x - 1, y - 1],
+    [x - 1, y],
+    [x - 1, y + 1]
+  ];
+
+  let sum = 0
+  let color = [0, 0, 0, 0, 0, 0]
+
+  neighborLocations.forEach((location) => {
+    let x = location[0];
+    let y = location[1];
+
+    if (data[y] !== undefined && data[y][x] !== undefined && !arrayEquals(data[y][x], [15, 15, 15, 15, 15, 15])) {
+      sum = sum + 1
+      for (let i = 0; i < 6; i++) {
+        color[i] = color[i] + data[y][x][i]
+      }
+    }
+
+  })
+  for (let i = 0; i < 6; i++) {
+    color[i] = Math.round(color[i]/sum)
+  }
+
+  return color
+
 }
 
 function liveCells(x, y) {
@@ -84,6 +134,7 @@ function liveCells(x, y) {
     [x - 1, y],
     [x - 1, y + 1]
   ];
+  console.log("hel")
 
   let sum = 0;
 
@@ -91,10 +142,12 @@ function liveCells(x, y) {
     let x = location[0];
     let y = location[1];
 
-    if (data[y] !== undefined && data[y][x] !== undefined) {
-      sum = sum + data[y][x];
+
+
+    if (data[y] !== undefined && data[y][x] !== undefined && !arrayEquals(data[y][x], [15, 15, 15, 15, 15, 15])) {
+      sum = sum + 1
     }
-  });
+  })
 
   return sum;
 }
@@ -104,12 +157,10 @@ function liveCells(x, y) {
 let isClear = true
 let isPaused = true
 
-
 function newBoard() {
   isClear = false
   pause()
   data = createArray(true)
-  nextGeneration()
   render(data)
 }
 
@@ -137,7 +188,7 @@ function step() {
     setTimeout(() => {
       nextGeneration()
       render(data)
-    }, 200)
+    }, 10)
   }
 }
 
@@ -146,5 +197,4 @@ setInterval(() => {
     nextGeneration()
     render(data)
   }
-}, 200)
-
+}, 10)
