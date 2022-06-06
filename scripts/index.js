@@ -12,8 +12,8 @@ function render(data) {
   ctx.fillRect(0, 0, height, width);
 
   const drawPixel = (x, y) => {
-    let color = data[y][x].map((num) => num.toString(16))
-    color = "#" + color.join("").toUpperCase()
+    let color = data[y][x].map((num) => num.toString(16));
+    color = "#" + color.join("").toUpperCase();
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
@@ -28,14 +28,20 @@ function render(data) {
 }
 
 function arrayEquals(a, b) {
-  return Array.isArray(a) &&
-      Array.isArray(b) &&
-      a.length === b.length &&
-      a.every((val, index) => val === b[index]);
+  return (
+    Array.isArray(a) &&
+    Array.isArray(b) &&
+    a.length === b.length &&
+    a.every((val, index) => val === b[index])
+  );
 }
 
-function randColor () {
-  return Array(6).fill(0).map(() => { return Math.floor(Math.random() * 16) }) 
+function randColor() {
+  return Array(6)
+    .fill(0)
+    .map(() => {
+      return Math.floor(Math.random() * 16);
+    });
 }
 
 let SIZE = 100;
@@ -48,10 +54,8 @@ function createArray(randomize = false) {
         .fill(0)
         .map(() => {
           if (randomize) {
-            if (1 === Math.round(Math.random()))
-              return randColor();
-            else 
-              return [15, 15, 15, 15, 15, 15]
+            if (Math.random() > 0.6) return randColor();
+            else return [15, 15, 15, 15, 15, 15];
           } else {
             return [15, 15, 15, 15, 15, 15];
           }
@@ -63,7 +67,6 @@ let data = createArray(true);
 
 function nextGeneration() {
   let newData = createArray();
-  console.log(newData)
 
   for (let y = 0; y < SIZE; y++) {
     for (let x = 0; x < SIZE; x++) {
@@ -71,7 +74,7 @@ function nextGeneration() {
       let isLive = !arrayEquals(data[y][x], [15, 15, 15, 15, 15, 15]);
       if (isLive) {
         if (sum < 2 || sum > 3) {
-          newData[y][x] = [15, 15, 15, 15, 15, 15]
+          newData[y][x] = [15, 15, 15, 15, 15, 15];
         } else {
           newData[y][x] = data[y][x];
         }
@@ -79,7 +82,7 @@ function nextGeneration() {
         if (sum === 3) {
           newData[y][x] = avgColor(x, y);
         } else {
-          newData[y][x] = [15, 15, 15, 15, 15, 15]
+          newData[y][x] = [15, 15, 15, 15, 15, 15];
         }
       }
     }
@@ -97,30 +100,33 @@ function avgColor(x, y) {
     [x, y - 1],
     [x - 1, y - 1],
     [x - 1, y],
-    [x - 1, y + 1]
+    [x - 1, y + 1],
   ];
 
-  let sum = 0
-  let color = [0, 0, 0, 0, 0, 0]
+  let sum = 0;
+  let color = [0, 0, 0, 0, 0, 0];
 
   neighborLocations.forEach((location) => {
     let x = location[0];
     let y = location[1];
 
-    if (data[y] !== undefined && data[y][x] !== undefined && !arrayEquals(data[y][x], [15, 15, 15, 15, 15, 15])) {
-      sum = sum + 1
+    if (
+      data[y] !== undefined &&
+      data[y][x] !== undefined &&
+      !arrayEquals(data[y][x], [15, 15, 15, 15, 15, 15])
+    ) {
+      sum = sum + 1;
       for (let i = 0; i < 6; i++) {
-        color[i] = color[i] + data[y][x][i]
+        color[i] = color[i] + data[y][x][i];
       }
     }
+  });
 
-  })
   for (let i = 0; i < 6; i++) {
-    color[i] = Math.round(color[i]/sum)
+    color[i] = Math.round(color[i] / sum);
   }
 
-  return color
-
+  return color;
 }
 
 function liveCells(x, y) {
@@ -132,69 +138,69 @@ function liveCells(x, y) {
     [x, y - 1],
     [x - 1, y - 1],
     [x - 1, y],
-    [x - 1, y + 1]
+    [x - 1, y + 1],
   ];
-  console.log("hel")
-
   let sum = 0;
 
   neighborLocations.forEach((location) => {
     let x = location[0];
     let y = location[1];
 
-
-
-    if (data[y] !== undefined && data[y][x] !== undefined && !arrayEquals(data[y][x], [15, 15, 15, 15, 15, 15])) {
-      sum = sum + 1
+    if (
+      data[y] !== undefined &&
+      data[y][x] !== undefined &&
+      !arrayEquals(data[y][x], [15, 15, 15, 15, 15, 15])
+    ) {
+      sum = sum + 1;
     }
-  })
+  });
 
   return sum;
 }
 
 // UI Functions
 
-let isClear = true
-let isPaused = true
+let isClear = true;
+let isPaused = true;
 
 function newBoard() {
-  isClear = false
-  pause()
-  data = createArray(true)
-  render(data)
+  isClear = false;
+  pause();
+  data = createArray(true);
+  render(data);
 }
 
 function clean() {
-  isClear = true
-  pause()
-  render(createArray())
+  isClear = true;
+  pause();
+  render(createArray());
 }
 
 function play() {
   if (isClear) {
-    alert("Create New Board")
+    alert("Create New Board");
   } else {
-    isPaused = false
+    isPaused = false;
   }
 }
 
 function pause() {
-  isPaused = true
+  isPaused = true;
 }
 
 function step() {
-  pause()
+  pause();
   if (!isClear) {
     setTimeout(() => {
-      nextGeneration()
-      render(data)
-    }, 10)
+      nextGeneration();
+      render(data);
+    }, 50);
   }
 }
 
 setInterval(() => {
   if (!isPaused) {
-    nextGeneration()
-    render(data)
+    nextGeneration();
+    render(data);
   }
-}, 10)
+}, 200);
