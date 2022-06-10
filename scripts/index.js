@@ -178,7 +178,7 @@ function clean() {
 
 function play() {
   if (isClear) {
-    alert("Create New Board");
+    alert("Reset the board to play the simulation.");
   } else {
     isPaused = false;
   }

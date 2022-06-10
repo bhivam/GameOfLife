@@ -1,33 +1,54 @@
 body {
-  font-family: sans-serif;
-}
-body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   padding: 0;
   margin: 0;
-  display: flex;
   min-height: 100vh;
   min-width: 100vw;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
+}
+
+button {
+  border: 0px;
+}
+
+body {
+  position: relative;
+}
+
+.content-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 canvas {
+  margin: 0 auto;
+  display: block;
   image-rendering: pixelated;
-  /* border: 1px solid black; */
+  border: 3px solid black;
+  /* The min function makes the canvas safe for horizontally and veritically
+  oriented screens*/
   height: min(80vw, 80vh);
   width: min(80vw, 80vh);
 }
 
-#control8-container {
+#control-container {
   display: flex;
-  margin-top: 1vh;
-  flex-direction: row;
   width: min(80vw, 80vh);
-  flex-wrap: wrap;
-
+  justify-content: space-around;
+  margin: 0 auto;
+  margin-top: 3vh;
 }
 
-button {
-  flex: 1;
+.button-controls {
+  background-color: darkgray;
+  border-radius: 10px;
+  width: 5vw;
+}
+
+.button-controls:hover {
+  background-color: gray;
 }
