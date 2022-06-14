@@ -35,7 +35,15 @@ canvas {
   width: min(80vw, 80vh);
 }
 
-#control-container {
+#button-container {
+  display: flex;
+  width: min(80vw, 80vh);
+  justify-content: space-around;
+  margin: 0 auto;
+  margin-top: 3vh;
+}
+
+.range-container {
   display: flex;
   width: min(80vw, 80vh);
   justify-content: space-around;
@@ -48,7 +56,7 @@ canvas {
   border-radius: 25px;
   font-size: 200%;
   height: fit-content;
-  width: fit-content;
+  width: 18%;
   padding: 1% 3%;
 }
 

@@ -9,12 +9,38 @@
   <body>
     <div class="content-container">
       <canvas height="500" width="500"></canvas>
-      <div id="control-container">
+      <div id="button-container">
         <button class="button-controls" onClick="newBoard()">Reset</button>
         <button class="button-controls" onClick="clean()">Clear</button>
         <button class="button-controls" onClick="play()">Play</button>
         <button class="button-controls" onClick="pause()">Pause</button>
         <button class="button-controls" onClick="step()">Step</button>
+      </div>
+      <div class="range-container">
+        <div>
+          <label for="size">size</label>
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value="50"
+            class="slider"
+            id="size"
+            name="size"
+          />
+        </div>
+        <div>
+          <label for="speed">speed</label>
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value="50"
+            class="slider"
+            id="speed"
+            nam="speed"
+          />
+        </div>
       </div>
     </div>
     <script src="scripts/index.js"></script>

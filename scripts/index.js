@@ -44,7 +44,7 @@ function randColor() {
     });
 }
 
-let SIZE = 100;
+let SIZE = 500;
 
 function createArray(randomize = false) {
   return Array(SIZE)
