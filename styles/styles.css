@@ -45,10 +45,17 @@ canvas {
 
 .button-controls {
   background-color: darkgray;
-  border-radius: 10px;
-  width: 5vw;
+  border-radius: 25px;
+  font-size: 200%;
+  height: fit-content;
+  width: fit-content;
+  padding: 1% 3%;
 }
 
 .button-controls:hover {
   background-color: gray;
+}
+
+.button-controls:active {
+  background-color: blue;
 }
