@@ -45,6 +45,7 @@ function randColor() {
 }
 
 let size = 100;
+let density = 0.5;
 
 function createArray(randomize = false) {
   return Array(size)
@@ -54,7 +55,7 @@ function createArray(randomize = false) {
         .fill(0)
         .map(() => {
           if (randomize) {
-            if (Math.random() > 0.6) return randColor();
+            if (Math.random() > density) return randColor();
             else return [15, 15, 15, 15, 15, 15];
           } else {
             return [15, 15, 15, 15, 15, 15];
@@ -196,6 +197,11 @@ function step() {
   }
 }
 
+function changeDensity(sliderDensity) {
+  density = 1 - sliderDensity * 0.1;
+  newBoard();
+}
+
 function changeSize(sliderSize) {
   size = sliderSize * 10;
   const canvas = document.getElementsByTagName("canvas")[0];
@@ -218,4 +224,5 @@ var loop = function () {
   setTimeout(loop, speed);
 };
 
+newBoard();
 setTimeout(loop, speed);
