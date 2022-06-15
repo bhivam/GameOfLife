@@ -44,13 +44,13 @@ function randColor() {
     });
 }
 
-let SIZE = 500;
+let size = 100;
 
 function createArray(randomize = false) {
-  return Array(SIZE)
+  return Array(size)
     .fill(1)
     .map(() => {
-      return Array(SIZE)
+      return Array(size)
         .fill(0)
         .map(() => {
           if (randomize) {
@@ -68,8 +68,8 @@ let data = createArray(true);
 function nextGeneration() {
   let newData = createArray();
 
-  for (let y = 0; y < SIZE; y++) {
-    for (let x = 0; x < SIZE; x++) {
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
       let sum = liveCells(x, y);
       let isLive = !arrayEquals(data[y][x], [15, 15, 15, 15, 15, 15]);
       if (isLive) {
@@ -191,16 +191,31 @@ function pause() {
 function step() {
   pause();
   if (!isClear) {
-    setTimeout(() => {
-      nextGeneration();
-      render(data);
-    }, 50);
+    nextGeneration();
+    render(data);
   }
 }
 
-setInterval(() => {
+function changeSize(sliderSize) {
+  size = sliderSize * 10;
+  const canvas = document.getElementsByTagName("canvas")[0];
+  canvas.width = size;
+  canvas.height = size;
+  newBoard();
+}
+
+let speed = 500;
+
+function changeSpeed(sliderSpeed) {
+  speed = 500 - (sliderSpeed - 5) * 100;
+}
+
+var loop = function () {
   if (!isPaused) {
     nextGeneration();
     render(data);
   }
-}, 200);
+  setTimeout(loop, speed);
+};
+
+setTimeout(loop, speed);
